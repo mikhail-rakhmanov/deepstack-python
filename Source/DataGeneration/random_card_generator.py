@@ -18,11 +18,11 @@ def card_generator(count):
 
     out = torch.empty(count, dtype=arguments['dtype'], device=arguments['device'])
     # counter for generated cards
-    generated_cards_count = []
-    while len(generated_cards_count) != count:
+    generated_cards_count = 0
+    while generated_cards_count != count:
         card = torch.randint(game_settings['card_count'], (1,), dtype=torch.int64, device=arguments['device'])
         if used_cards[card] == 0:
-            out[len(generated_cards_count)] = card
+            out[generated_cards_count] = card
             used_cards[card] = 1
-            generated_cards_count.append(1)
+            generated_cards_count += 1
     return out
