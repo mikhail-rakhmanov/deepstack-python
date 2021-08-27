@@ -14,15 +14,15 @@ from Source.Settings.game_settings import game_settings
 
 def card_generator(count):
     # marking all used cards
-    used_cards = torch.empty(game_settings['card_count'], dtype=torch.uint8, device=arguments['device']).zero_()
+    used_cards = torch.empty(game_settings['card_count'], dtype=torch.bool, device=arguments['device']).zero_()
 
     out = torch.empty(count, dtype=arguments['dtype'], device=arguments['device'])
     # counter for generated cards
     generated_cards_count = 0
     while generated_cards_count != count:
         card = torch.randint(game_settings['card_count'], (1,), dtype=torch.int64, device=arguments['device'])
-        if used_cards[card] == 0:
+        if not used_cards[card]:
             out[generated_cards_count] = card
-            used_cards[card] = 1
+            used_cards[card] = True
             generated_cards_count += 1
     return out
